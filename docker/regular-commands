@@ -1,0 +1,26 @@
+service
+kubectl delete service casting-service
+kubectl create -f docker/casting-service.yaml
+kubectl get services
+
+
+deployment
+kubectl delete deployment castingzonesui
+kubectl create -f docker/casting-deployment.yaml
+kubectl get deployments
+
+pods
+kubectl get pods
+
+kubectl apply -f docker/kube/
+
+docker build -f  docker/Dockerfile . -t venkis/tatsa
+
+deploy kubernetes dashboard
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/recommended.yaml
+
+
+kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{.data.token | base64decode}}"
+
+kubectl expose deployment castingzonesui --port=3000 --target-port=3000 --selector=castingzonesui
+
